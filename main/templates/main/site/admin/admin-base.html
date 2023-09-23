@@ -1,0 +1,120 @@
+<head>
+  {% block title %}
+  <title>index</title>
+  {% endblock title %}
+  <link
+    href="https://fonts.googleapis.com/css2?family=Irish+Grover&family=Itim&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    .trg-body-inherit {
+      height: 100%;
+      background-color: #c3995a;
+    }
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background-color: #c3995a;
+    }
+    .section-bkg-menuANDcontent {
+      background-color: #d9d9d9;
+    }
+
+    .style-header-content {
+      font-family: "Irish Grover", cursive;
+      font-size: 5rem;
+      color: black;
+    }
+    .style-subheader-content {
+      font-family: "Itim", cursive;
+      font-size: 2rem;
+      color: black;
+      margin-top: 4rem;
+      margin-bottom: 1rem;
+    }
+    .style-menu {
+      font-family: "Irish Grover", cursive;
+      font-size: 1.5rem;
+      color: black;
+    }
+    .style-person-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      height: 3rem;
+      width: 3rem;
+      border: solid black 1px;
+      border-radius: 50%;
+      margin-left: 1rem;
+    }
+    .inherit-width {
+      width: 100%;
+    }
+    .section-content-bkg {
+      background-color: #d9d9d9;
+    }
+    .style-content {
+      font-family: "Itim", cursive;
+      font-size: 1.5rem;
+      color: black;
+    }
+    .container-overflow {
+      height: 320px;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+  </style>
+  {% block styles%}
+  <style></style>
+  {% endblock styles %}
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+  />
+</head>
+
+<!-- prettier-ignore -->
+<body>
+  <div class="navbar is-fixed-top section-bkg-menuANDcontent">
+    <div class="container">
+      <div class="navbar-brand"></div>
+      <div class="navbar-menu">
+        <div class="navbar-start">
+          <a
+            class="navbar-item style-menu"
+            href="{% url 'main:site_home' id=id %}"
+          >
+        Administration
+          </a>
+
+        
+        </div>
+        <div class="navbar-end">
+          <a class="navbar-item style-menu">
+            Welcome {{ username }}
+            <div class="style-person-button">
+              <ion-icon name="person"></ion-icon>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="trg-body-inherit">
+    {% block content %}
+    {% endblock content %}
+    </div>
+    <script
+    type="module"
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+  ></script>
+  <script
+    nomodule
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+  ></script>
+  </body>
+<!-- //prettier-ignore -->

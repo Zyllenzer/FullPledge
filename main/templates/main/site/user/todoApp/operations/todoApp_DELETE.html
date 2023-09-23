@@ -1,0 +1,54 @@
+<div class="modal" id="todoApp_DELETE_modal">
+  <div class="modal-background" id="background_modal_DELETE"></div>
+  <div class="modal-card">
+    <header class="modal-card-head style-modal-bkg">
+      <p class="modal-card-title style-modal-header">Delete Task</p>
+      <button class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <p
+        id="content_delete_todo"
+        class="style-modal-subheader-filelabel-input"
+      ></p>
+      <input type="text" id="id_delete_todo" hidden />
+    </section>
+    <footer class="modal-card-foot style-modal-bkg">
+      <button class="button style-btn-save" id="submit_delete_todolist">
+        Save changes
+      </button>
+      <button class="button">Cancel</button>
+    </footer>
+  </div>
+</div>
+<script>
+  const background_modal_DELETE = document.getElementById(
+    "background_modal_DELETE"
+  );
+  background_modal_DELETE.addEventListener("click", () => {
+    let todoApp_DELETE_modal = document.getElementById("todoApp_DELETE_modal");
+    todoApp_DELETE_modal.classList.remove("is-active");
+  });
+  const submit_delete_todolist = document.getElementById(
+    "submit_delete_todolist"
+  );
+  submit_delete_todolist.addEventListener("click", () => {
+    let json_data = {};
+    json_data.id = document.getElementById("id_delete_todo").value;
+    fetch("{% url 'main:user_todo_DELETE' id=id %}", {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken"),
+        "Content-Type": "application/json",
+      },
+      mode: "same-origin",
+      body: JSON.stringify(json_data),
+    })
+      .then((data) => {
+        console.log(data);
+        window.location.href = "{% url 'main:user_todo' id=id %}";
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+</script>

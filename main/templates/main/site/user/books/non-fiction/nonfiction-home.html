@@ -1,0 +1,166 @@
+{% extends '../non-fiction/nonfiction-base.html' %}
+
+<head>
+  {% block title %}
+  <title>Non-Fiction Books</title>
+  {% endblock title %} {% block styles %}
+  <style>
+    .visibily-hidden-for-column {
+      visibility: hidden;
+    }
+    .nonfic_imageChange {
+      height: 450px;
+      width: 450px;
+    }
+  </style>
+  {% endblock styles %}
+</head>
+{% load static %}
+<body>
+  <!-- prettier-ignore -->
+  {% block content %}
+  <div class="section">
+    {% load custom_filters %} {% for i in loopcount|custom_range %}
+    <!-- //prettier-ignore -->
+    <div class="columns">
+      <div class="column" id="column_visibility">
+        <div class="has-text-centered style_menuANDcontent-background">
+          <h1 id="bookName" class="style-header-each-book">for Book Name</h1>
+          <img id="bookImage" src="" class="nonfic_imageChange my-4" />
+          <h1 id="bookAuthor" class="style-subheader-each-book">Book Author</h1>
+          <h1 id="bookVisitedLast" class="style-subheader-each-book">
+            Visited Last Time
+          </h1>
+          <h1 class="style-subheader-each-book" id="bookCurrentPage">
+            Current Page:
+          </h1>
+          <h1 class="style-subheader-each-book" id="bookLastPage">
+            Last Page:
+          </h1>
+          <div class="style-EditDelete-icons" id="style_icons_EditDelete">
+            <div class="button delete-btn-modal style-btn-operations">
+              <ion-icon name="trash-outline"></ion-icon>
+            </div>
+            <div class="button edit-btn-modal style-btn-operations">
+              <ion-icon name="create-outline"></ion-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="column" id="column_visibility">
+        <div class="has-text-centered style_menuANDcontent-background">
+          <h1 id="bookName" class="style-header-each-book">for Book Name</h1>
+          <img id="bookImage" src="" class="nonfic_imageChange my-4" />
+          <h1 id="bookAuthor" class="style-subheader-each-book">Book Author</h1>
+          <h1 id="bookVisitedLast" class="style-subheader-each-book">
+            Visited Last Time
+          </h1>
+          <h1 class="style-subheader-each-book" id="bookCurrentPage">
+            Current Page:
+          </h1>
+          <h1 class="style-subheader-each-book" id="bookLastPage">
+            Last Page:
+          </h1>
+          <div class="style-EditDelete-icons" id="style_icons_EditDelete">
+            <div class="button delete-btn-modal style-btn-operations">
+              <ion-icon name="trash-outline"></ion-icon>
+            </div>
+            <div class="button edit-btn-modal style-btn-operations">
+              <ion-icon name="create-outline"></ion-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="column" id="column_visibility">
+        <div class="has-text-centered style_menuANDcontent-background">
+          <h1 id="bookName" class="style-header-each-book">for Book Name</h1>
+          <img id="bookImage" src="" class="nonfic_imageChange my-4" />
+          <h1 id="bookAuthor" class="style-subheader-each-book">Book Author</h1>
+          <h1 id="bookVisitedLast" class="style-subheader-each-book">
+            Visited Last Time
+          </h1>
+          <h1 class="style-subheader-each-book" id="bookCurrentPage">
+            Current Page:
+          </h1>
+          <h1 class="style-subheader-each-book" id="bookLastPage">
+            Last Page:
+          </h1>
+          <div class="style-EditDelete-icons" id="style_icons_EditDelete">
+            <div class="button delete-btn-modal style-btn-operations">
+              <ion-icon name="trash-outline"></ion-icon>
+            </div>
+            <div class="button edit-btn-modal style-btn-operations">
+              <ion-icon name="create-outline"></ion-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% endfor %}
+  </div>
+  <script>
+    const bookName = document.querySelectorAll("#bookName");
+    const bookImage = document.querySelectorAll("#bookImage");
+    const bookAuthor = document.querySelectorAll("#bookAuthor");
+    const bookVisitedLast = document.querySelectorAll("#bookVisitedLast");
+    const bookCurrentPage = document.querySelectorAll("#bookCurrentPage");
+    const bookLastPage = document.querySelectorAll("#bookLastPage");
+    const column_visibility = document.querySelectorAll("#column_visibility");
+    const icon_delete_btn = document.querySelectorAll(".delete-btn-modal");
+    const icon_edit_btn = document.querySelectorAll(".edit-btn-modal");
+
+    column_visibility.forEach((element) => {
+      element.classList.add("visibily-hidden-for-column");
+    });
+    // books_collections = books_collection|safe }}
+
+    // console.log(books_files.name)
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === name + "=") {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+    fetch("{% url 'main:nonfic_books_GET' id=id %}", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((data) => {
+        return data.json();
+      })
+      .then((data) => {
+        let i = 0;
+        data.data.forEach((element) => {
+          bookName[i].textContent = element.book_name;
+          bookImage[i].src = `${element.bookImage}`;
+          bookAuthor[i].textContent = `Author: ${element.author}`;
+          bookVisitedLast[i].textContent = `Last Visited: ${element.author}`;
+          bookCurrentPage[
+            i
+          ].textContent = `Current Page: ${element.current_page}`;
+          bookLastPage[i].textContent = `Last Page: ${element.last_page}`;
+          column_visibility[i].classList.remove("visibily-hidden-for-column");
+          icon_delete_btn[i].id = element.id;
+          icon_delete_btn[i].classList.add(`${i}`);
+          icon_edit_btn[i].id = element.id;
+          icon_edit_btn[i].classList.add(`${i}`);
+
+          i++;
+        });
+      })
+      .catch((err) => console.log(err));
+  </script>
+  {% endblock content %}
+</body>

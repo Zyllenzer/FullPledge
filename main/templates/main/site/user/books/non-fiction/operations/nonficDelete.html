@@ -1,0 +1,84 @@
+<div class="modal" id="modal-delete-nonfic">
+  <div class="modal-background" id="modal-background-delete-nonfic"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title style-modal-header has-text-centered">
+        Delete A Nonfiction Book
+      </p>
+      <button class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <div
+        id="content-delete-modal"
+        class="style-modal-subheader-filelabel-input"
+      ></div>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button style-btn-save" id="submit_delete_btn">
+        Save changes
+      </button>
+      <button class="button" id="cancel-btn">Cancel</button>
+    </footer>
+  </div>
+</div>
+<script>
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  const delete_modal = document.getElementById("modal-delete-nonfic");
+  const modal_background_delete = document.querySelector(
+    "#modal-background-delete-nonfic"
+  );
+  const cancel_btn = document.getElementById("cancel-btn");
+  cancel_btn.addEventListener("click", closemodal);
+  modal_background_delete.addEventListener("click", closemodal);
+  function closemodal() {
+    delete_modal.classList.remove("is-active");
+  }
+  const content_delete_modal = document.getElementById("content-delete-modal");
+  const data = {};
+  icon_delete_btn.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      delete_modal.classList.add("is-active");
+      const integerID = parseInt(button.id);
+      const classNames = button.className;
+      const classNamesArray = classNames.split(" ");
+      const integerClass = classNamesArray.find((className) =>
+        /^\d+$/.test(className)
+      );
+      content_delete_modal.textContent = `Are you sure you want to delete this book: ${bookName[integerClass].textContent}`;
+      data.id = integerID;
+    });
+  });
+  const submit_delete_btn = document.getElementById("submit_delete_btn");
+  submit_delete_btn.addEventListener("click", () => {
+    fetch("{% url 'main:nonfic_books_DELETE' id=id %}", {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken"),
+        "Content-Type": "application/json",
+      },
+      mode: "same-origin",
+      body: JSON.stringify(data),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return (window.location.href = "{% url 'main:nonfic_books' id=id %}");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+</script>

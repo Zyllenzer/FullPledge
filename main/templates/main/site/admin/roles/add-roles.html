@@ -1,0 +1,40 @@
+<!-- prettier-ignore -->
+{% extends '../../admin/admin-base.html' %} {% block content %}
+<!-- //prettier-ignore -->
+<section class="hero is-fullheight">
+  <div class="hero-body">
+    <div class="inherit-width">
+      <div class="has-text-centered">
+        <p>Add Roles</p>
+      </div>
+      <div class="columns is-vcentered has-text-centered">
+        <div class="column">
+          <div class="has-text-centered">
+            <p class="button">Choose User</p>
+          </div>
+        </div>
+        <div class="column">
+          <p>Apply Roles</p>
+          <div class="columns">
+            <div class="column">
+              <input type="checkbox" />
+            </div>
+            <div class="column">
+              <p>User</p>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <input type="checkbox" />
+            </div>
+            <div class="column">
+              <p>Admin</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

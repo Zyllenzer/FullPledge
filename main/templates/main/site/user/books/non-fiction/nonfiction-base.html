@@ -1,0 +1,183 @@
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Irish+Grover&family=Itim&display=swap"
+    rel="stylesheet"
+  />
+  {% block title %}
+  <title>index</title>
+  {% endblock title %}
+  <style>
+    .trg-body-inherit {
+      height: 100%;
+      background-color: #8660d9;
+    }
+    .style-person-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      height: 3rem;
+      width: 3rem;
+      border: solid black 1px;
+      border-radius: 50%;
+      margin-left: 1rem;
+      margin-right: 3rem;
+    }
+
+    .style-error-msg {
+      color: red;
+      font-size: 1rem;
+      display: none;
+    }
+    .style-EditDelete-icons {
+      display: none;
+    }
+
+    .style-menu {
+      font-family: "Irish Grover", cursive;
+      font-size: 1.5rem;
+      color: black;
+    }
+    .style_menuANDcontent-background {
+      background-color: #d9d9d9;
+    }
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background-color: #8660d9;
+    }
+    .style-header-each-book {
+      font-family: "Itim", cursive;
+      font-size: 2rem;
+      color: black;
+    }
+    .style-subheader-each-book {
+      font-family: "Itim", cursive;
+      font-size: 1.2rem;
+      color: black;
+    }
+    .style-btn-operations {
+      color: black;
+      font-size: 1.5rem;
+      background-color: #d9d9d9;
+    }
+    .style-modal-header {
+      font-family: "Irish Grover", cursive;
+      font-size: 2rem;
+      color: black;
+    }
+
+    .style-modal-subheader-label-input {
+      font-family: "Itim", cursive;
+      font-size: 1.3rem;
+      color: black;
+    }
+    .style-modal-bkg {
+      background-color: #d9d9d9;
+    }
+    .style-modal-subheader-filelabel-input {
+      font-family: "Itim", cursive;
+      font-size: 1.3rem;
+      color: black;
+    }
+    .style-btn-save {
+      background-color: #8660d9;
+      color: #d9d9d9;
+      font-family: "Itim", cursive;
+    }
+    .style-modal-input {
+      font-size: 1.1rem;
+      color: black;
+      font-family: "Itim", cursive;
+    }
+  </style>
+  {% block styles %}
+  <style></style>
+  {% endblock styles %}
+</head>
+<body>
+  <div class="navbar style_menuANDcontent-background">
+    <div class="container">
+      <div class="navbar-brand"></div>
+      <div class="navbar-menu">
+        <div class="navbar-start">
+          <a
+            class="navbar-item style-menu"
+            href="{% url 'main:site_home' id=id %}"
+          >
+            Home
+          </a>
+
+          <a class="navbar-item style-menu"> Books </a>
+          <a href="" class="navbar-item style-menu">Art</a>
+        </div>
+        <div class="navbar-end">
+          <a class="navbar-item style-menu" id="btn_icons_EditDelete">Edit</a>
+          <a class="navbar-item style-menu" id="btn-modal-nonfic">
+            Add A new book
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="trg-body-inherit">{% block content %} {% endblock content%}</div>
+  <!-- prettier-ignore -->
+  {% include "main\site\user\books\non-fiction\operations\nonficAdd.html" %}
+ {% include "main\site\user\books\non-fiction\operations\nonficDelete.html" %}
+ {% include 'main\site\user\books\non-fiction\operations\nonficEdit.html' %}
+  <!-- //prettier-ignore -->
+  <script
+    type="module"
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+  ></script>
+  <script
+    nomodule
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+  ></script>
+  <script>
+    const btn_icons_EditDelete = document.getElementById(
+      "btn_icons_EditDelete"
+    );
+    const style_icons_EditDelete = document.querySelectorAll(
+      "#style_icons_EditDelete"
+    );
+    btn_icons_EditDelete.addEventListener("click", () => {
+      if (btn_icons_EditDelete.textContent == "Edit") {
+        style_icons_EditDelete.forEach((element) => {
+          element.style.display = "block";
+        });
+        btn_icons_EditDelete.textContent = "Stop Editing";
+      } else if (btn_icons_EditDelete.textContent === "Stop Editing") {
+        style_icons_EditDelete.forEach((element) => {
+          element.style.display = "none";
+        });
+        btn_icons_EditDelete.textContent = "Edit";
+      }
+    });
+    const add_nonfic_modal = document.getElementById("modal-add-nonfic");
+    const btnAdd_modal_nonfic = document.getElementById("btn-modal-nonfic");
+
+    btnAdd_modal_nonfic.addEventListener("click", () => {
+      add_nonfic_modal.classList.add("is-active");
+    });
+
+    const btn_modal_cancel = document.querySelector("#btn-modal-cancel");
+    const modal_background = document.querySelector(".modal-background");
+    modal_background.addEventListener("click", closing_modals);
+    btn_modal_cancel.addEventListener("click", closing_modals);
+    function closing_modals() {
+      add_nonfic_modal.classList.remove("is-active");
+    }
+
+    const dropFilesContainer = document.getElementById("dropFilesContainer");
+  </script>
+</body>

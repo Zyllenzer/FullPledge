@@ -1,0 +1,138 @@
+<style></style>
+<div class="modal" id="todoApp_ADD_modal">
+  <div class="modal-background" id="background_modal_ADD"></div>
+  <div class="modal-card">
+    <header class="modal-card-head style-modal-bkg">
+      <p class="modal-card-title has-text-centered style-modal-header">
+        Add Task
+      </p>
+      <button class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="columns is-vcentered">
+        <div class="column">
+          <div class="has-text-centered style-modal-subheader-filelabel-input">
+            Task
+          </div>
+        </div>
+        <div class="column">
+          <input
+            type="text"
+            name=""
+            id="task_add_desc"
+            class="input style-modal-input"
+          />
+          <p
+            class="has-text-centered style-err-input-todolist"
+            id="err-i-taskdesc"
+          >
+            No valid input
+          </p>
+        </div>
+      </div>
+      <div class="columns is-vcentered">
+        <div class="column">
+          <div class="has-text-centered style-modal-subheader-filelabel-input">
+            Due Date
+          </div>
+        </div>
+        <div class="column">
+          <input
+            type="date"
+            name=""
+            id="task_add_duedate"
+            class="input style-modal-input"
+          />
+          <p
+            class="has-text-centered style-err-input-todolist"
+            id="err-i-duedate"
+          >
+            No valid input
+          </p>
+        </div>
+      </div>
+    </section>
+    <footer class="modal-card-foot style-modal-bkg">
+      <button class="button style-btn-save" id="submit_add_todolist">
+        Save changes
+      </button>
+      <button class="button" id="cancel_todoList_ADD">Cancel</button>
+    </footer>
+  </div>
+</div>
+
+<script>
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) === name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  const todoApp_ADD_modal = document.getElementById("todoApp_ADD_modal");
+  const background_modal_ADD = document.getElementById("background_modal_ADD");
+  const cancel_todoList_ADD = document.getElementById("cancel_todoList_ADD");
+  function closeModal_Add() {
+    todoApp_ADD_modal.classList.remove("is-active");
+  }
+  background_modal_ADD.addEventListener("click", closeModal_Add);
+  cancel_todoList_ADD.addEventListener("click", closeModal_Add);
+
+  const submit_add_todolist = document.getElementById("submit_add_todolist");
+  submit_add_todolist.addEventListener("click", (e) => {
+    let json_data = {};
+    json_data = validate_todoApp_add();
+    console.log(json_data);
+    if (!json_data) {
+      console.log("No valid input");
+      return false;
+    }
+
+    // json_data.task_desc = task_add_desc;
+    // json_data.duedate = task_add_duedate;
+    e.preventDefault();
+    fetch("{% url 'main:user_todo_ADD' id=id %}", {
+      method: "POST",
+
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken"),
+        "Content-Type": "application/json",
+      },
+      mode: "same-origin",
+      body: JSON.stringify(json_data),
+    })
+      .then((data) => {
+        window.location.href = "{% url 'main:user_todo' id=id %}";
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+
+  function validate_todoApp_add() {
+    const data = {};
+    const task_add_desc = document.getElementById("task_add_desc").value;
+    const task_add_duedate = document.getElementById("task_add_duedate").value;
+    const err_i_taskdesc = document.getElementById("err-i-taskdesc");
+    const err_i_duedate = document.getElementById("err-i-duedate");
+    err_i_taskdesc.style.display = "none";
+    err_i_duedate.style.display = "none";
+    if (!task_add_desc && !task_add_duedate) {
+      err_i_taskdesc.style.display = "block";
+      err_i_duedate.style.display = "block";
+      return false;
+    }
+    data.task_desc = task_add_desc;
+    data.duedate = task_add_duedate;
+    return data;
+  }
+</script>

@@ -1,0 +1,186 @@
+{% extends 'main/index.html' %}
+
+<head>
+  {% block title %}
+  <title>SignUp</title>
+  {% endblock title %} {% block styles %}
+  <style>
+    .inherit-width {
+      width: 100%;
+    }
+
+    .style-text-font-inputsANDlabel-login {
+      font-size: 2rem;
+      font-family: Arial;
+    }
+    .style-header-login {
+      font-size: 4rem;
+      margin-bottom: 2rem;
+    }
+    .style-error-login {
+      color: red;
+      font-size: 1.5rem;
+      display: none;
+    }
+  </style>
+  {% endblock styles %}
+</head>
+
+<body>
+  {% block content %}
+  <div class="container">
+    <section class="hero is-fullheight">
+      <div class="hero-body">
+        <div class="inherit-width">
+          <form class="section section_auth" method="POST">
+            <h1 class="has-text-centered style-header-login header_auth">
+              Sign Up Page
+            </h1>
+            <div class="columns is-vcentered">
+              <div class="column">
+                <p
+                  class="has-text-right is-5-desktop mr-4 style-text-font-inputsANDlabel-login"
+                >
+                  Username:
+                </p>
+              </div>
+              <div class="column is-7-desktop">
+                <input
+                  type="text"
+                  id="inp-username"
+                  class="input style-text-font-inputsANDlabel-login section_input_auth"
+                />
+                <p
+                  class="has-text-centered style-error-login"
+                  id="err-i-username"
+                >
+                  Please input in this field
+                </p>
+              </div>
+              <div class="column is-0-desktop"></div>
+            </div>
+            <div class="columns is-vcentered">
+              <div class="column">
+                <p
+                  class="has-text-right is-5-desktop mr-4 style-text-font-inputsANDlabel-login"
+                >
+                  Password:
+                </p>
+              </div>
+              <div class="column is-7-desktop">
+                <input
+                  type="password"
+                  id="inp-password"
+                  class="input style-text-font-inputsANDlabel-login section_input_auth"
+                />
+                <p
+                  class="has-text-centered style-error-login"
+                  id="err-i-password"
+                >
+                  Please input in this field
+                </p>
+              </div>
+              <div class="column is-0-desktop"></div>
+            </div>
+
+            <p class="has-text-centered style-text-font-inputsANDlabel-login">
+              Already have an account??
+              <a href="{% url 'main:auth_login'%} ">Login</a>
+            </p>
+            <div class="has-text-centered">
+              <button
+                class="button style-text-font-inputsANDlabel-login my-6 section_submit_btn"
+                id="login-submit"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === name + "=") {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+    const btn_submit = document.getElementById("login-submit");
+
+    btn_submit.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      let json_data = validate();
+      if (!json_data) {
+        console.log("error no input");
+        return;
+      }
+
+      let response = fetch("{% url 'main:auth_signUp' %}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCookie("csrftoken"),
+        },
+        mode: "same-origin",
+        body: JSON.stringify(json_data),
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("Request failed");
+          }
+        })
+        .then((res) => {
+          return (window.location.href = `/signUp/verification/${res.data.username_sh}/${res.data.password_sh}/`);
+        })
+        .catch((err) => {
+          console.log(err);
+          const validate_username = document.getElementById("err-i-username");
+          validate_username.textContent = "The username has been already used";
+          validate_username.style.display = "block";
+        });
+    });
+    function validate() {
+      const inp_username = document.getElementById("inp-username").value;
+      const inp_password = document.getElementById("inp-password").value;
+      const validate_username = document.getElementById("err-i-username");
+      const validate_password = document.getElementById("err-i-password");
+      validate_username.textContent = "Please input in this field";
+      validate_password.style.display = "none";
+      validate_username.style.display = "none";
+
+      let data = {};
+      data.username = inp_username;
+      data.password = inp_password;
+      if (!inp_password && !inp_username) {
+        validate_password.style.display = "block";
+        validate_username.style.display = "block";
+        return false;
+      } else if (!inp_password) {
+        validate_password.style.display = "block";
+        validate_username.style.display = "none";
+        return false;
+      } else if (!inp_username) {
+        validate_password.style.display = "none";
+        validate_username.style.display = "block";
+        return false;
+      }
+
+      return data;
+    }
+  </script>
+  {% endblock content %}
+</body>

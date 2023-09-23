@@ -1,0 +1,115 @@
+{% extends '../../site/admin/admin-base.html' %}
+
+<head>
+  {% block title %}
+  <title>Admin</title>
+  <!-- prettier-ignore -->
+  {% endblock title %}
+  {% block styles %}
+  <style>
+    .inherit-width {
+      width: 100%;
+    }
+  </style>
+  {% endblock styles %}
+  <!-- //prettier-ignore -->
+</head>
+{% block content %}
+<section class="hero is-fullheight">
+  <div class="hero-body" style="background-color: #c3995a">
+    <div class="inherit-width">
+      <div class="columns is-vcentered">
+        <div class="column section-content-bkg">
+          <div class="has-text-centered">
+            <h1 class="style-header-content">Recently Updates</h1>
+            <p class="style-subheader-content has-text-centered">Book Page</p>
+          </div>
+          <div class="columns has-text-centered">
+            <div class="column"><p class="style-content">User</p></div>
+            <div class="column"><p class="style-content">Date</p></div>
+            <div class="column"><p class="style-content">Title Book</p></div>
+            <div class="column"><p class="style-content">Actions</p></div>
+          </div>
+          <div class="container-overflow">
+            {% for i in BookUpdate_Collection %}
+            <div class="columns has-text-centered">
+              <div class="column">
+                <p class="style-content">{{ i.user }}</p>
+              </div>
+              <div class="column">
+                <p class="style-content">{{ i.date_action_created }}</p>
+              </div>
+              <div class="column">
+                <p class="style-content">{{ i.book_title }}</p>
+              </div>
+              <div class="column">
+                <p class="style-content">{{ i.actions }}</p>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="has-text-centered">
+            <p class="style-subheader-content">Todo Page</p>
+          </div>
+          <div class="columns has-text-centered">
+            <div class="column"><p class="style-content">User</p></div>
+            <div class="column"><p class="style-content">Date</p></div>
+            <div class="column"><p class="style-content">Description</p></div>
+            <div class="column"><p class="style-content">Actions</p></div>
+          </div>
+          <div class="container-overflow">
+            {% for i in TodoList_Collection %}
+            <div class="columns has-text-centered">
+              <div class="column">
+                <p class="style-content">{{ i.user }}</p>
+              </div>
+              <div class="column">
+                <p class="style-content">{{ i.date_action_created }}</p>
+              </div>
+              <div class="column">
+                <p class="style-content">{{ i.description }}</p>
+              </div>
+              <div class="column">
+                <p class="style-content">{{ i.actions }}</p>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="column">
+          <div class="section">
+            <h1>Total Users</h1>
+            <div class="columns">
+              <div class="column">
+                <div class="has-text-centered">
+                  <a class="button" href="{% url 'main:role_page' id=id %}">
+                    Roles</a
+                  >
+                </div>
+              </div>
+              <div class="column">
+                <div class="has-text-centered">
+                  <div class="button">View</div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="has-text-centered">
+                  <a class="button" href="{% url 'main:role_page_ADD' id=id %}"
+                    >Add</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="section">
+            <div class="columns">
+              <div class="column">Site Visited</div>
+              <div class="column">PLOTLy</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content%}

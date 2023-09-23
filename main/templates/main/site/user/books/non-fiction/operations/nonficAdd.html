@@ -1,0 +1,201 @@
+<form enctype="multipart/form-data" class="modal" id="modal-add-nonfic">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title style-modal-header has-text-centered">
+        Add a Nonfiction Book
+      </p>
+      <button class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="columns">
+        <div class="column">
+          <div class="style-modal-subheader-filelabel-input has-text-centered">
+            Choose an Image for the Book
+          </div>
+          <div id="dataFile-image" class="file has-name">
+            <label class="file-label">
+              <input
+                class="file-input style-modal-input"
+                type="file"
+                id="inp-File-image"
+              />
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+
+                <span class="file-label"> Choose a file… </span>
+              </span>
+              <span class="file-name"> No file uploaded </span>
+            </label>
+          </div>
+
+          <div class="style-modal-subheader-filelabel-input has-text-centered">
+            Choose an file for the Book
+          </div>
+          <div id="dataFile-book" class="file has-name">
+            <label class="file-label">
+              <input
+                class="file-input style-modal-input"
+                type="file"
+                id="inp-File-book"
+              />
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+
+                <span class="file-label"> Choose a file… </span>
+              </span>
+              <span class="file-name"> No file uploaded </span>
+            </label>
+          </div>
+        </div>
+        <div class="column">
+          <form action="">
+            <div class="has-text-centered">
+              <p class="style-modal-subheader-label-input">Author Name:</p>
+              <input
+                type="text"
+                id="inp-author-name"
+                class="style-modal-input"
+              />
+              <div class="style-error-msg" id="err-msg-authorName">
+                Error Message
+              </div>
+            </div>
+            <div class="has-text-centered">
+              <p class="style-modal-subheader-label-input">Book Name:</p>
+              <input type="text" id="inp-book-name" class="style-modal-input" />
+              <div class="style-error-msg" id="err-msg-bookName">
+                Error Message
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button style-btn-save" id="submit-addnonfic">
+        Save changes
+      </button>
+      <button class="button" id="btn-modal-cancel">Cancel</button>
+    </footer>
+  </div>
+</form>
+<script>
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  const dataFile_image = document.querySelector(
+    "#dataFile-image input[type=file]"
+  );
+  dataFile_image.onchange = () => {
+    if (dataFile_image.files.length > 0) {
+      const fileName = document.querySelector("#dataFile-image .file-name");
+      fileName.textContent = dataFile_image.files[0].name;
+    }
+  };
+  const dataFile_book = document.querySelector(
+    "#dataFile-book input[type=file]"
+  );
+  dataFile_book.onchange = () => {
+    if (dataFile_book.files.length > 0) {
+      const fileName = document.querySelector("#dataFile-book .file-name");
+      fileName.textContent = dataFile_book.files[0].name;
+    }
+  };
+  //======================================================================
+  const submit_nonfic = document.getElementById("submit-addnonfic");
+  const box_dataFile_image = document.getElementById("inp-File-image");
+  const box_dataFile_book = document.getElementById("inp-File-book");
+
+  let file_inp_image, file_inp_book;
+
+  box_dataFile_image.addEventListener("change", (event) => {
+    file_inp_image = event.target.files[0];
+    if (file_inp_image) {
+      return file_inp_image;
+    } else {
+      return (file_inp_image = null);
+    }
+  });
+  box_dataFile_book.addEventListener("change", (event) => {
+    file_inp_book = event.target.files[0];
+
+    if (file_inp_book) {
+      return file_inp_book;
+    } else {
+      return (file_inp_book = null);
+    }
+  });
+
+  submit_nonfic.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    let json_data = validate();
+    if (!json_data) {
+      return false;
+    }
+    fetch("{% url 'main:nonfic_books_ADD' id=id %}", {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken"),
+      },
+      mode: "same-origin",
+      body: json_data,
+    })
+      .then((res) => {
+        if (res.ok) {
+          return (window.location.href = "{% url 'main:nonfic_books' id=id %}");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+
+  function validate() {
+    let form_check = document.querySelector("form");
+    const data = new FormData(form_check);
+    const inp_author_name = document.getElementById("inp-author-name").value;
+    const inp_book_name = document.getElementById("inp-book-name").value;
+    const err_msg_authorName = document.getElementById("err-msg-authorName");
+    const err_msg_bookName = document.getElementById("err-msg-bookName");
+
+    if (!inp_author_name && !inp_book_name) {
+      err_msg_authorName.style.display = "block";
+      err_msg_bookName.style.display = "block";
+      return false;
+    } else if (!inp_book_name) {
+      err_msg_authorName.style.display = "none";
+      err_msg_bookName.style.display = "block";
+      return false;
+    } else if (!inp_author_name) {
+      err_msg_authorName.style.display = "block";
+      err_msg_bookName.style.display = "none";
+      return false;
+    } else {
+      err_msg_authorName.style.display = "none";
+      err_msg_bookName.style.display = "none";
+    }
+
+    data.append("inp_file_image", file_inp_image);
+    data.append("inp_file_book", file_inp_book);
+    data.append("inp_file_author", inp_author_name);
+    data.append("inp_file_BookName", inp_book_name);
+    return data;
+  }
+</script>

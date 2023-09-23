@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% block title %}
+    <title>Fiction</title>
+    {% endblock title %}
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Irish+Grover&family=Itim&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      .style-menu {
+        font-family: "Irish Grover", cursive;
+        font-size: 1.5rem;
+        color: black;
+      }
+      .trg-body-inherit {
+        height: 100%;
+        background-color: #8660d9;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #8660d9;
+      }
+      .style_menuANDcontent-background {
+        background-color: #d9d9d9;
+      }
+    </style>
+    {% block styles %}
+    <style></style>
+    {% endblock styles %}
+  </head>
+
+  <body>
+    <div class="navbar is-fixed-top style_menuANDcontent-background">
+      <div class="container">
+        <div class="navbar-brand"></div>
+        <div class="navbar-menu">
+          <div class="navbar-start">
+            <a class="navbar-item style-menu" href=""> Home </a>
+
+            <a class="navbar-item style-menu"> Books </a>
+            <a href="" class="navbar-item style-menu">Art</a>
+          </div>
+          <div class="navbar-end">
+            <a class="navbar-item style-menu" id="btn_icons_EditDelete">Edit</a>
+            <a class="navbar-item style-menu" id="btn-modal-nonfic">
+              Add A new book
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="trg-body-inherit">
+      {% block content %} {% endblock content%}
+    </div>
+  </body>
+</html>

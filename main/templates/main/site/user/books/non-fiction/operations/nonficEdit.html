@@ -1,0 +1,269 @@
+<form enctype="multipart/form-data" class="modal" id="modal-edit-nonfic">
+  <div class="modal-background" id="modal-background-edit-nonfic"></div>
+  <div class="modal-card">
+    <header class="modal-card-head style-modal-bkg">
+      <p class="modal-card-title has-text-centered style-modal-header">
+        Edit a Nonfiction Book
+      </p>
+      <button class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="columns is-vcentered">
+        <div class="column">
+          <div id="content-edit-modal"></div>
+          <div class="style-modal-subheader-filelabel-input has-text-centered">
+            Choose an Image for the Book
+          </div>
+          <div id="dataFile-image-edit" class="file has-name">
+            <label class="file-label">
+              <input class="file-input" type="file" id="inp-File-image" />
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <input type="text" id="nonfic-id-edit" hidden />
+                <span class="file-label"> Choose a file… </span>
+              </span>
+              <span class="file-name" id="file_name_bookimage_edit">
+                Already have a file</span
+              >
+            </label>
+          </div>
+
+          <div class="style-modal-subheader-filelabel-input has-text-centered">
+            Choose an file for the Book
+          </div>
+          <div id="dataFile-book-edit" class="file has-name">
+            <label class="file-label">
+              <input
+                class="file-input style-modal-input"
+                type="file"
+                id="inp-File-book"
+              />
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+
+                <span class="file-label"> Choose a file… </span>
+              </span>
+              <span class="file-name" id="file_name_bookfile_edit">
+                Already have a file
+              </span>
+            </label>
+          </div>
+        </div>
+        <div class="column">
+          <form action="">
+            <div class="has-text-centered my-4">
+              <p class="style-modal-subheader-label-input">Author Name:</p>
+              <input
+                type="text "
+                id="inp-author-name-edit"
+                class="style-modal-input"
+              />
+              <div class="style-error-msg" id="err-msg-authorName-edit">
+                Error Message
+              </div>
+            </div>
+            <div class="has-text-centered my-4">
+              <p class="style-modal-subheader-label-input">Book Name:</p>
+              <input
+                type="text"
+                id="inp-book-name-edit"
+                class="style-modal-input"
+              />
+              <div class="style-error-msg" id="err-msg-bookName-edit">
+                Error Message
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+    <footer class="modal-card-foot style-modal-bkg">
+      <button class="button style-btn-save" id="submit-editnonfic">
+        Save changes
+      </button>
+      <button class="button" id="cancel-btn">Cancel</button>
+    </footer>
+  </div>
+</form>
+
+<script>
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  const edit_modal = document.getElementById("modal-edit-nonfic");
+  const modal_background_edit = document.querySelector(
+    "#modal-background-edit-nonfic"
+  );
+  const cancel_btn_edit = document.getElementById("cancel-btn");
+  cancel_btn_edit.addEventListener("click", closemodal);
+  modal_background_edit.addEventListener("click", closemodal);
+  function closemodal() {
+    edit_modal.classList.remove("is-active");
+  }
+
+  const edit_dataFile_image = document.querySelector(
+    "#dataFile-image-edit input[type=file]"
+  );
+  (file_inp_image = null), (file_inp_book = null);
+  edit_dataFile_image.onchange = () => {
+    if (edit_dataFile_image.files.length > 0) {
+      const fileName = document.querySelector(
+        "#dataFile-image-edit .file-name"
+      );
+      fileName.textContent = edit_dataFile_image.files[0].name;
+    }
+    file_inp_image = edit_dataFile_image.files[0];
+  };
+  const edit_dataFile_book = document.querySelector(
+    "#dataFile-book-edit input[type=file]"
+  );
+  edit_dataFile_book.onchange = () => {
+    if (edit_dataFile_book.files.length > 0) {
+      const fileName = document.querySelector("#dataFile-book-edit .file-name");
+      fileName.textContent = edit_dataFile_book.files[0].name;
+      file_inp_book = edit_dataFile_book.files[0];
+    }
+  };
+  //======================================================================
+
+  //const content_edit_modal = document.getElementById("content-edit-modal");
+  const data_edit = {};
+  icon_edit_btn.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      edit_modal.classList.add("is-active");
+      const integerID = parseInt(button.id);
+      const classNames = button.className;
+      const classNamesArray = classNames.split(" ");
+      const integerClass = classNamesArray.find((className) =>
+        /^\d+$/.test(className)
+      );
+      // content_edit_modal.textContent = `Are you sure you want to delete this book: ${bookName[integerClass].textContent}`;
+      data_edit.id = integerID;
+
+      fetch(`/home/books/${data_edit.id}/nonfiction/EDIT`, {
+        method: "GET",
+        headers: {
+          "X-CSRFToken": getCookie("csrftoken"),
+          "Content-Type": "application/json",
+        },
+        mode: "same-origin",
+      })
+        .then((data) => {
+          return data.json();
+        })
+        .then((data) => {
+          console.log(data);
+
+          let bookfile = data.data.bookFile;
+          let parts = bookfile.split("/");
+          let get_imageFile = parts[parts.length - 1];
+
+          let bookImagefile = data.data.bookImage;
+          parts = bookImagefile.split("/");
+          get_bookFile = parts[parts.length - 1];
+
+          const file_input_image = (document.getElementById(
+            "file_name_bookimage_edit"
+          ).textContent = get_imageFile);
+          const file_input_book = (document.getElementById(
+            "file_name_bookfile_edit"
+          ).textContent = get_bookFile);
+          const input_author_edit = (document.getElementById(
+            "inp-author-name-edit"
+          ).value = data.data.author);
+          const input_bookName_edit = (document.getElementById(
+            "inp-book-name-edit"
+          ).value = data.data.book_name);
+          const nonfic_id_edit = (document.getElementById(
+            "nonfic-id-edit"
+          ).value = data.data.id);
+        })
+        .catch((err) => {
+          return err;
+        });
+    });
+  });
+
+  const submit_editnonfic = document.getElementById("submit-editnonfic");
+  submit_editnonfic.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    const data = edit_validate();
+    if (!data) {
+      return false;
+    }
+
+    const nonfic_id_edit = document.getElementById("nonfic-id-edit").value;
+    fetch(`/home/books/${nonfic_id_edit}/nonfiction/EDIT`, {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken"),
+      },
+      mode: "same-origin",
+      body: data,
+    })
+      .then((msg) => {
+        console.log(msg);
+        return msg.json();
+      })
+      .then((data) => {
+        console.log(data);
+        window.location.href = "{% url 'main:nonfic_books' id=id %}";
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+  function edit_validate() {
+    let form_check = document.getElementById("modal-edit-nonfic");
+    const data = new FormData(form_check);
+    const inp_author_name = document.getElementById(
+      "inp-author-name-edit"
+    ).value;
+    const inp_book_name = document.getElementById("inp-book-name-edit").value;
+    const err_msg_authorName = document.getElementById(
+      "err-msg-authorName-edit"
+    );
+    const err_msg_bookName = document.getElementById("err-msg-bookName-edit");
+
+    if (!inp_author_name && !inp_book_name) {
+      err_msg_authorName.style.display = "block";
+      err_msg_bookName.style.display = "block";
+      return false;
+    } else if (!inp_book_name) {
+      err_msg_authorName.style.display = "none";
+      err_msg_bookName.style.display = "block";
+      return false;
+    } else if (!inp_author_name) {
+      err_msg_authorName.style.display = "block";
+      err_msg_bookName.style.display = "none";
+      return false;
+    } else {
+      err_msg_authorName.style.display = "none";
+      err_msg_bookName.style.display = "none";
+    }
+
+    data.append("inp_file_image", file_inp_image);
+    data.append("inp_file_book", file_inp_book);
+    data.append("inp_file_author", inp_author_name);
+    data.append("inp_file_BookName", inp_book_name);
+
+    return data;
+  }
+</script>

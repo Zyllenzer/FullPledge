@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap"
+      rel="stylesheet"
+    />
+    {% block title %}
+    <title>index</title>
+    {% endblock title %}
+    <style>
+      .trg-body-inherit {
+        height: 100%;
+      }
+      body {
+        background-color: #529ab0;
+      }
+      .section_auth {
+        background-color: #d9d9d9;
+      }
+      .section_input_auth {
+        background-color: #d9d9d9;
+        border-width: 3px;
+        border-color: #529ab0;
+        border-style: solid;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+      }
+      .section_submit_btn {
+        background-color: #529ab0;
+      }
+      .header_auth {
+        font-family: "Irish Grover", cursive;
+        color: black;
+      }
+    </style>
+    {% block styles %}
+    <style></style>
+    {% endblock styles %}
+  </head>
+  <body>
+    <div class="trg-body-inherit">
+      {% block content %} {% endblock content%}
+    </div>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+  </body>
+</html>

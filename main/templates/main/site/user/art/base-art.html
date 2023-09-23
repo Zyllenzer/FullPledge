@@ -1,0 +1,182 @@
+{% extends '../../../site/base.html' %}
+<head>
+  {% block title %}
+  <title>Art</title>
+  {% endblock title %} {% block styles %}
+  <style>
+    .inherit-width {
+      width: 100%;
+    }
+    .style-image-generate-art {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .style-btn-generate-art {
+      background-color: #d9d9d9;
+    }
+    .style-header-art {
+      font-family: "Irish Grover", cursive;
+      font-size: 2rem;
+      color: black;
+    }
+    body {
+      background-color: #8660d9;
+    }
+
+    .frame {
+      margin: auto;
+      border: 25px solid #222;
+      height: 800px;
+      width: 550px;
+      -webkit-box-shadow: px 2px 3px 1px rgba(0, 0, 0, 0.5);
+      box-shadow: 0px 3px 10px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .border {
+      background: white;
+      height: 100%;
+      width: 100%;
+      -webkit-box-shadow: inset 10px 10px 10px 4px rgba(0, 0, 0, 0.4);
+      box-shadow: inset 3px 7px 2px 5px rgba(0, 0, 0, 0.4);
+    }
+
+    .image {
+      position: absolute;
+      height: 650px;
+      width: 410px;
+      margin-left: 50px;
+      margin-top: 50px;
+      -webkit-box-shadow: inset 10px 10px 10px 4px rgba(0, 0, 0, 0.6);
+      box-shadow: inset 3px 7px 2px 5px rgba(0, 0, 0, 0.1);
+      border: 2px inset #c9c9c9;
+    }
+    .image img {
+      height: 100%;
+      width: 100%;
+    }
+
+    .text {
+      position: absolute;
+      margin-top: 420px;
+      font-family: "Playball", cursive;
+      font-size: 30px;
+      margin-left: 85px;
+    }
+  </style>
+  {% endblock styles %}
+</head>
+<body>
+  {% block content %}
+  <div class="hero is-fullheight">
+    <div class="hero-body">
+      <div class="inherit-width">
+        <!--
+        <div class="style-image-generate-art">
+          <figure class="is-128x128">
+            <img
+              src="https://bulma.io/images/placeholders/256x256.png"
+              id="image_art_generate"
+            />
+          </figure>
+          <p class="has-text-centered style-header-art">Generate</p>
+        </div>
+        -->
+        <div class="frame">
+          <div class="border">
+            <div class="image">
+              <img
+                src="
+                "
+                height="650px"
+                width="410px"
+                alt=""
+                id="image_art_generate"
+              />
+            </div>
+
+            <!--end image-->
+            <!--  <div class="text">Marilyn Monroe</div>-->
+          </div>
+          <!--end border-->
+        </div>
+        <!--end frame-->
+        <div class="columns">
+          <div class="column">
+            <div class="has-text-centered">
+              <div
+                class="button style-btn-generate-art style-header-art"
+                id="btn-mangaArt"
+              >
+                Manga Art
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="has-text-centered">
+              <div
+                class="button style-btn-generate-art style-header-art"
+                id="btn-Landscape"
+              >
+                Landscape Art
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const btn_Landscape = document.getElementById("btn-Landscape");
+    const image_art_generate = document.getElementById("image_art_generate");
+    const btn_mangaArt = document.getElementById("btn-mangaArt");
+    btn_mangaArt.addEventListener("click", () => {
+      try {
+        const response = fetch(
+          "https://random-anime-img.p.rapidapi.com/anime",
+          {
+            method: "GET",
+            headers: {
+              "X-RapidAPI-Key":
+                "f199006824msh0d565b17987f8e3p173147jsnf08ed7ea6435",
+              "X-RapidAPI-Host": "random-anime-img.p.rapidapi.com",
+            },
+          }
+        )
+          .then((data) => {
+            return data.json();
+          })
+          .then((res) => {
+            image_art_generate.src = res.url;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } catch (error) {
+        console.error(error);
+      }
+    });
+    btn_Landscape.addEventListener("click", () => {
+      fetch(
+        `https://api.unsplash.com/photos/random/?client_id=E2oXfV1trMWHkGwoGLdOVoQpjS_TRT5nLe4t0NI9X44`,
+        {
+          method: "GET",
+        }
+      )
+        .then((data) => {
+          return data.json();
+        })
+        .then((res) => {
+          console.log(res);
+          image_art_generate.src = res.urls.raw;
+        })
+        .catch((err) => {
+          console.log(err);
+          return err;
+        });
+    });
+  </script>
+
+  {% endblock content %}
+</body>

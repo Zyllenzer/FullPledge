@@ -1,0 +1,80 @@
+{% extends '../../../site/base.html' %}
+
+<head>
+  {% block title %}
+  <title>Book Choice</title>
+  {% endblock %} {% block styles %}
+  <style>
+    .inherit-width {
+      width: 100%;
+    }
+    .image-resize {
+      width: 350px;
+      height: 350px;
+    }
+    .image-resize img {
+      border-radius: 50%;
+    }
+    .label-centering {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-right: 10rem;
+      margin-left: 10rem;
+    }
+    body {
+      background-color: #8660d9;
+    }
+    .style-section-bookChoice {
+      background-color: #d9d9d9;
+    }
+    .style-header-bookChoice {
+      font-family: "Irish Grover", cursive;
+      color: black;
+      font-size: 2rem;
+    }
+  </style>
+  {% endblock styles %}
+</head>
+{% load static %}
+<body>
+  {% block content %}
+  <div class="hero is-fullheight">
+    <div class="hero-body">
+      <div class="inherit-width">
+        <div class="columns is-variable is-8-desktop">
+          <div class="column">
+            <a
+              class="label-centering style-section-bookChoice"
+              href="{% url 'main:fiction_books' id=id %}"
+            >
+              <h1 class="style-header-bookChoice">Fiction</h1>
+
+              <figure class="image image-resize m-6">
+                <img
+                  src="{% static 'main/homepage/user/books/books-fiction.png' %}"
+                />
+              </figure>
+            </a>
+          </div>
+          <div class="column">
+            <a
+              class="label-centering style-section-bookChoice"
+              href="{% url 'main:nonfic_books' id=id %}"
+            >
+              <h1 class="style-header-bookChoice">Non-Fiction</h1>
+              <figure class="image image-resize m-6">
+                <img
+                  src="{% static 'main/homepage/user/books/books-nonfiction.png' %}"
+                />
+              </figure>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endblock content %}
+</body>

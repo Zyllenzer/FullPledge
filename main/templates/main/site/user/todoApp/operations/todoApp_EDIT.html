@@ -1,0 +1,120 @@
+<div class="modal" id="todoApp_EDIT_modal">
+  <div class="modal-background" id="background_modal_EDIT"></div>
+  <div class="modal-card">
+    <header class="modal-card-head style-modal-bkg">
+      <p class="modal-card-title has-text-centered style-modal-header">
+        Edit Task
+      </p>
+      <button class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="columns is-vcentered">
+        <div class="column">
+          <div class="has-text-centered style-modal-subheader-filelabel-input">
+            Task
+          </div>
+        </div>
+        <div class="column">
+          <input type="text" id="task_edit_ID" hidden />
+          <input
+            type="text"
+            name=""
+            id="task_edit_desc"
+            class="input style-modal-input"
+          />
+          <p
+            class="has-text-centered style-err-input-todolist"
+            id="err-i-taskdesc"
+          >
+            No valid input
+          </p>
+        </div>
+      </div>
+      <div class="columns is-vcentered">
+        <div class="column">
+          <div class="has-text-centered style-modal-subheader-filelabel-input">
+            Due Date
+          </div>
+        </div>
+        <div class="column">
+          <input
+            type="date"
+            name=""
+            id="task_edit_duedate"
+            class="input style-modal-input"
+          />
+          <p
+            class="has-text-centered style-err-input-todolist"
+            id="err-i-duedate"
+          >
+            No valid input
+          </p>
+        </div>
+      </div>
+      <div class="columns is-vcentered">
+        <div class="column">
+          <div class="has-text-centered style-modal-subheader-filelabel-input">
+            Completed
+          </div>
+        </div>
+        <div class="column">
+          <input type="checkbox" name="" id="task_edit_completed" />
+          <p
+            class="has-text-centered style-err-input-todolist"
+            id="err-i-duedate"
+          >
+            No valid input
+          </p>
+        </div>
+      </div>
+    </section>
+    <footer class="modal-card-foot style-modal-bkg">
+      <button class="button style-btn-save" id="submit_edit_todolist">
+        Save changes
+      </button>
+      <button class="button" id="cancel_todoList_edit">Cancel</button>
+    </footer>
+  </div>
+</div>
+
+<script>
+  const todoApp_EDIT_modal = document.getElementById("todoApp_EDIT_modal");
+  const background_modal_EDIT = document.getElementById(
+    "background_modal_EDIT"
+  );
+  const cancel_todoList_edit = document.getElementById("cancel_todoList_edit");
+  function closeModal_Edit() {
+    todoApp_EDIT_modal.classList.remove("is-active");
+  }
+  background_modal_EDIT.addEventListener("click", closeModal_Edit);
+  cancel_todoList_edit.addEventListener("click", closeModal_Edit);
+
+  const submit_edit_todolist = document.getElementById("submit_edit_todolist");
+  submit_edit_todolist.addEventListener("click", (e) => {
+    e.preventDefault();
+    const json_data = {};
+    json_data.task_desc = document.getElementById("task_edit_desc").value;
+    json_data.due_date = document.getElementById("task_edit_duedate").value;
+    const completed_edit = document.getElementById("task_edit_completed");
+    json_data.completed = completed_edit.checked;
+    json_data.id = document.getElementById("task_edit_ID").value;
+    console.log(json_data);
+
+    fetch("{% url 'main:user_todo_EDIT' id=id %}", {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken"),
+        "Content-Type": "application/json",
+      },
+      mode: "same-origin",
+      body: JSON.stringify(json_data),
+    })
+      .then((data) => {
+        console.log(data);
+        window.location.href = "{% url 'main:user_todo' id=id %}";
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+</script>

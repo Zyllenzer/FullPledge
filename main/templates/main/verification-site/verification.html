@@ -1,0 +1,159 @@
+{% extends 'main/index.html' %}
+
+<head>
+  {% block title %}
+  <title>Verify</title>
+  {% endblock title %} {% block styles %}
+
+  <style>
+    .inherit-width {
+      width: 100%;
+    }
+    .style-header-verify {
+      font-size: 5rem;
+    }
+    .style-sub-verify {
+      font-size: 3rem;
+      font-family: Arial;
+      color: black;
+    }
+    .style-inpEmail-verify {
+      font-size: 1.5rem;
+      border: 3px solid #529ab0;
+      border-radius: 22px;
+    }
+    .style-icon-veriify {
+      font-size: 4rem;
+    }
+
+    .style-icon-veriify:hover {
+      color: black;
+      transition: ease-in-out 0.5s;
+      cursor: pointer;
+    }
+    .style-error-verification {
+      color: red;
+      font-size: 2rem;
+      display: none;
+    }
+  </style>
+  {% endblock styles %}
+</head>
+
+<body>
+  {% block content%}
+  <div class="hero is-fullheight">
+    <div class="hero-body">
+      <div class="inherit-width">
+        <div class="has-text-centered section_auth">
+          <h1 class="style-header-verify header_auth">Verification</h1>
+          <h1 class="style-sub-verify">
+            Please enter your email in order to verify your account
+          </h1>
+          <div class="columns is-vcentered">
+            <div class="column is-2-desktop"></div>
+            <div class="column is-8-desktop">
+              <form action="" method="POST">
+                <input
+                  type="email"
+                  id="inp_email"
+                  class="style-inpEmail-verify input"
+                  placeholder="Email"
+                />
+                <p
+                  class="has-text-centered style-error-verification"
+                  id="err-i-email"
+                >
+                  Please input a valid email
+                </p>
+                <input
+                  type="text"
+                  id="inp_username"
+                  hidden
+                  value="{{ PostUsername }}"
+                />
+                <input
+                  type="text"
+                  id="inp_password"
+                  hidden
+                  value="{{ PostPassword }}"
+                />
+              </form>
+            </div>
+            <div class="column is-2-desktop">
+              <div class="has-text-left style-icon-veriify">
+                <ion-icon
+                  name="arrow-forward-circle"
+                  id="send-email"
+                ></ion-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === name + "=") {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+    const btn_sendEmail = document.getElementById("send-email");
+    const json_data = {};
+    btn_sendEmail.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      const inp_username = document.getElementById("inp_username").value;
+      const inp_password = document.getElementById("inp_password").value;
+      if (!validate()) {
+        console.log("error no input");
+        return;
+      }
+      json_data.email = validate();
+      json_data.username = inp_username;
+      json_data.password = inp_password;
+      fetch(`/signUp/verification/${inp_username}/${inp_password}/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCookie("csrftoken"),
+        },
+        //mode: "same-origin",
+        body: JSON.stringify(json_data),
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("Request failed");
+          }
+        })
+        .then((res) => {
+          return (window.location.href = `/signUp/verification/success`);
+        })
+        .catch((err) => console.log(err));
+    });
+    function validate() {
+      const validate_email = document.getElementById("err-i-email");
+      const inp_email = document.getElementById("inp_email").value;
+
+      if (!inp_email) {
+        validate_email.style.display = "block";
+        return false;
+      }
+      return inp_email;
+    }
+  </script>
+  {% endblock content %}
+</body>

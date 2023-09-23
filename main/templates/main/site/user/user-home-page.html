@@ -1,0 +1,126 @@
+{% extends '../../site/base.html' %}
+
+<head>
+  {% block title %}
+  <title>Home Page</title>
+  {% endblock title%} {% block styles %}
+
+  <style>
+    .inherit-width {
+      width: 100%;
+    }
+  </style>
+
+  {% endblock styles %}
+</head>
+{% load static %}
+<body>
+  {% block content %}
+  <div class="hero is-fullheight">
+    <div class="hero-body">
+      <div class="inherit-width">
+        <div class="columns is-vcentered is-variable is-8-desktop">
+          <div class="column">
+            <img src="{% static 'main/homepage/user/apple2.jpg' %}" />
+          </div>
+          <div class="column section-bkg-menuANDcontent">
+            <h1 class="style-header-content has-text-centered">Books</h1>
+            <p class="style-subheader-content">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
+              dolore suscipit exercitationem rerum delectus ex, dolorum nam
+              assumenda illo aspernatur fugiat dolor! Ipsam illo nisi voluptate
+              ad modi sed molestias, quia maiores, esse quaerat autem accusamus
+              inventore distinctio commodi fugit architecto. Asperiores dolor,
+              sapiente debitis aut vel autem ex aliquam alias ad id, nisi unde
+              consectetur neque, quas voluptatum beatae nostrum aliquid soluta
+              magnam impedit officiis quis odio. Quasi totam quis quo blanditiis
+              quia ea nihil, ex nisi. Sequi dolorum, consequuntur minima sed
+              illum, eius, quod corrupti excepturi dolorem similique eligendi
+              nam voluptate. Possimus, distinctio porro error a eaque in?
+            </p>
+            <div class="has-text-centered">
+              <a
+                href="{% url 'main:user_books' id=id %}"
+                class="button style-btn-content"
+              >
+                View Books
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero is-fullheight">
+    <div class="hero-body">
+      <div class="inherit-width">
+        <div class="columns is-vcentered is-variable is-8-desktop">
+          <div class="column section-bkg-menuANDcontent">
+            <h1 class="style-header-content has-text-centered">Art</h1>
+            <p class="style-subheader-content">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
+              dolore suscipit exercitationem rerum delectus ex, dolorum nam
+              assumenda illo aspernatur fugiat dolor! Ipsam illo nisi voluptate
+              ad modi sed molestias, quia maiores, esse quaerat autem accusamus
+              inventore distinctio commodi fugit architecto. Asperiores dolor,
+              sapiente debitis aut vel autem ex aliquam alias ad id, nisi unde
+              consectetur neque, quas voluptatum beatae nostrum aliquid soluta
+              magnam impedit officiis quis odio. Quasi totam quis quo blanditiis
+              quia ea nihil, ex nisi. Sequi dolorum, consequuntur minima sed
+              illum, eius, quod corrupti excepturi dolorem similique eligendi
+              nam voluptate. Possimus, distinctio porro error a eaque in?
+            </p>
+            <div class="has-text-centered">
+              <a
+                href="{% url 'main:user_art' id=id %}"
+                class="button style-btn-content"
+              >
+                View Art
+              </a>
+            </div>
+          </div>
+          <div class="column">
+            <img src="{% static 'main/homepage/user/apple2.jpg' %}" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero is-fullheight">
+    <div class="hero-body">
+      <div class="inherit-width">
+        <div class="columns is-vcentered is-variable is-8-desktop">
+          <div class="column">
+            <img src="{% static 'main/homepage/user/apple2.jpg' %}" />
+          </div>
+          <div class="column section-bkg-menuANDcontent">
+            <h1 class="style-header-content has-text-centered">Todo List</h1>
+            <p class="style-subheader-content">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
+              dolore suscipit exercitationem rerum delectus ex, dolorum nam
+              assumenda illo aspernatur fugiat dolor! Ipsam illo nisi voluptate
+              ad modi sed molestias, quia maiores, esse quaerat autem accusamus
+              inventore distinctio commodi fugit architecto. Asperiores dolor,
+              sapiente debitis aut vel autem ex aliquam alias ad id, nisi unde
+              consectetur neque, quas voluptatum beatae nostrum aliquid soluta
+              magnam impedit officiis quis odio. Quasi totam quis quo blanditiis
+              quia ea nihil, ex nisi. Sequi dolorum, consequuntur minima sed
+              illum, eius, quod corrupti excepturi dolorem similique eligendi
+              nam voluptate. Possimus, distinctio porro error a eaque in?
+            </p>
+            <div class="has-text-centered">
+              <a
+                href="{% url 'main:user_todo' id=id %}"
+                class="button style-btn-content"
+              >
+                Create Todo List
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock content%}
+</body>
