@@ -111,10 +111,13 @@ def site_home(request, id):
 def admin_page(request, id ):
     b = BookUpdate.objects.all().order_by("date_action_created")
     t = TodoUpdate.objects.all().order_by("date_action_created")
+    user_count = UserSite.objects.all().count()
+    
     context = {
             "id": id,
             "BookUpdate_Collection": b,
-            "TodoList_Collection":t, 
+            "TodoList_Collection":t,
+            "user_count":user_count, 
     }
     return render(request, "main/site/admin/admin-home-page.html", context)
 
@@ -133,11 +136,48 @@ def role_page(request, id):
     return render(request,"main/site/admin/roles/home-roles.html", context)
 
 def role_page_ADD(request, id):
+    u = UserSite.objects.all().order_by("username")
 
+    if request.method == "POST":
+        json_data = json.loads(request.body)
+        u_ref = UserSite.objects.get(username = json_data['username'])
+        r = Role.objects.get(user_ref = u_ref)
+        r.user_role = json_data['role_user']
+        r.admin_role = json_data["role_admin"]
+        r.save()
+        return JsonResponse({"msg":"Data has been successfuly sent"})   
+      
+
+
+       
     context ={
-        "id":id
+        "id":id,
+        "users_choose":u,
+
     }
     return render(request, "main/site/admin/roles/add-roles.html", context )
+
+def role_page_EDIT(request,id):
+    u = UserSite.objects.get(id=id)
+    r = Role.objects.get(user_ref =u)
+  
+    context = {
+        "id":id,
+        "user":u,
+        "roles":r,
+    }
+    if (request.method =="POST"):
+        json_data = json.loads(request.body)
+        print(json_data)
+        user = UserSite.objects.get(username = json_data['username'])
+        role = Role.objects.get(user_ref = user)
+        role.user_role = json_data['role_user']
+        role.admin_role = json_data['role_admin']
+        role.save()
+        return JsonResponse({"msg":"Data has been successfuly sent"})   
+        #print("this is for post edit")
+        
+    return render(request,"main/site/admin/roles/edit-roles.html", context)
 # =============================== USER PAGES =======================
 #========================== BOOKS ================================
 def user_books(request,id):

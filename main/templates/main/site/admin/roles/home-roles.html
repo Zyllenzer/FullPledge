@@ -1,53 +1,95 @@
-{% extends '../../admin/admin-base.html' %} {% block content %}
+{% extends '../../admin/admin-base.html' %}
+<head>
+  {% block title %}
+  <title>Roles</title>
+  <!-- prettier-ignore -->
+  {% endblock title %}
+  {% block styles %}
+  <!-- //prettier-ignore -->
+  <style>
+    .section-header {
+      font-size: 6rem;
+      font-family: "Irish Grover", cursive;
+      color: black;
+    }
+    .section-sub-header {
+      font-size: 4rem;
+      font-family: "Itim", cursive;
+      color: black;
+    }
+    .section-content {
+      font-size: 2rem;
+      font-family: "Itim", cursive;
+      color: black;
+    }
+    .bkg-section {
+      background-color: #d9d9d9;
+    }
+  </style>
+  {% endblock styles %}
+</head>
+<!-- prettier-ignore -->
+{% block content %}
+<!-- //prettier-ignore -->
 <section class="hero is-fullheight">
   <div class="hero-body">
-    <div class="inherit-width">
+    <div class="inherit-width bkg-section my-5">
       <div>
-        <h1 class="has-text-centered">Roles</h1>
+        <h1 class="has-text-centered section-header">Roles</h1>
         <div class="columns is-vcentered">
-          <div class="column">Users</div>
+          <div class="column section-sub-header has-text-centered">Users</div>
           <div class="column">
-            {% for i in user_roles %}
-            <div class="columns">
-              <div class="column">
-                <p>{{ i.user_ref.username }}</p>
+            <div class="container-overflow">
+              {% for i in user_roles %}
+              <div class="columns section-content has-text-centered my-5">
+                <div class="column">
+                  <p>{{ i.user_ref.username }}</p>
+                </div>
+                <div class="column">
+                  <a
+                    class="button"
+                    href="/homeSite/admin/{{ i.user_ref.id }}/roles/edit"
+                  >
+                    <ion-icon name="create-outline"></ion-icon>
+                  </a>
+                </div>
+                <div class="column">
+                  <p class="button">
+                    <ion-icon name="trash-outline"></ion-icon>
+                  </p>
+                </div>
               </div>
-              <div class="column">
-                <p>
-                  <ion-icon name="create-outline"></ion-icon>
-                </p>
-              </div>
-              <div class="column">
-                <p>
-                  <ion-icon name="trash-outline"></ion-icon>
-                </p>
-              </div>
+              {% endfor %}
             </div>
-            {% endfor %}
           </div>
         </div>
         <div class="columns is-vcentered">
           <div class="column">
-            {% for i in admin_roles %}
-            <div class="columns">
-              <div class="column">
-                <p>{{ i.user_ref.username }}</p>
+            <div class="container-overflow">
+              {% for i in admin_roles %}
+              <div class="columns section-content has-text-centered">
+                <div class="column">
+                  <p>{{ i.user_ref.username }}</p>
+                </div>
+                <div class="column">
+                  <a
+                    class="button"
+                    href="/homeSite/admin/{{ i.user_ref.id }}/roles/edit"
+                  >
+                    <ion-icon name="create-outline"></ion-icon>
+                  </a>
+                </div>
+                <div class="column">
+                  <p class="button">
+                    <ion-icon name="trash-outline"></ion-icon>
+                  </p>
+                </div>
               </div>
-              <div class="column">
-                <p>
-                  <ion-icon name="create-outline"></ion-icon>
-                </p>
-              </div>
-              <div class="column">
-                <p>
-                  <ion-icon name="trash-outline"></ion-icon>
-                </p>
-              </div>
+              {% endfor %}
             </div>
-            {% endfor %}
           </div>
           <div class="column">
-            <p>Admins</p>
+            <p class="section-sub-header has-text-centered">Admins</p>
           </div>
         </div>
       </div>

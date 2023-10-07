@@ -2,7 +2,7 @@
 {% extends '../../admin/admin-base.html' %}
 <head>
   {% block title %}
-  <title>Add Roles</title>
+  <title>Edit Roles</title>
   <!-- prettier-ignore -->
   {% endblock title %}
   {% block styles %}
@@ -85,6 +85,10 @@
       color: black;
       border: 5px solid black;
     }
+    .read-only-inp {
+      pointer-events: none; /* Prevent user interactions like clicks */
+      user-select: none; /* Prevent text selection */
+    }
   </style>
   {% endblock styles %}
 </head>
@@ -95,21 +99,28 @@
   <div class="hero-body">
     <div class="inherit-width bkg-section">
       <div class="has-text-centered">
-        <p class="section-header">Add Roles</p>
+        <p class="section-header">Edit Roles</p>
       </div>
       <div class="columns is-vcentered has-text-centered">
         <div class="column">
           <div class="has-text-centered">
+            <input
+              type="text"
+              class="input section-content mx-6 has-text-centered read-only-inp"
+              value="{{ user.username }}"
+              id="username_inp"
+            />
+            <!--
             <select id="username_inp" class="section-content">
-              <option value="" selected>Choose a value</option>
-              {% for i in users_choose %}
-              <option value="{{ i.username }}">{{ i.username }}</option>
-              {% endfor %}
+              <option value="{{ user.username }}" selected>
+                {{ user.username }}
+              </option>
             </select>
+            -->
           </div>
         </div>
         <div class="column">
-          <p class="section-sub-header">Apply Roles</p>
+          <p class="section-sub-header">Roles</p>
           <div class="columns is-vcentered">
             <div class="column">
               <label class="container">
@@ -141,6 +152,13 @@
   </div>
 </section>
 <script>
+  const role_admin_check = document.getElementById("role-admin");
+  const role_user_check = document.getElementById("role-user");
+  let role_admin_get = "{{ roles.admin_role }}";
+  let role_user_get = "{{ roles.user_role }}";
+  role_admin_check.checked = role_admin_get.toLowerCase() === "true";
+  role_user_check.checked = role_user_get.toLowerCase() === "true";
+
   const add_roles = document.getElementById("admin-add-roles");
   function getCookie(name) {
     let cookieValue = null;
@@ -170,7 +188,8 @@
       username: username_inp.value,
     };
     console.log(data);
-    fetch("{% url 'main:role_page_ADD' id=id %}", {
+
+    fetch("{% url 'main:role_page_EDIT' id=id %}", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -181,9 +200,7 @@
       .then((res) => {
         window.location.href = "/homeSite/admin/{{ id }}/roles/";
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => console.log(err));
   });
 </script>
 
