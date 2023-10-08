@@ -32,7 +32,7 @@ urlpatterns = [
    path('homeSite/admin/<int:id>/roles/', views.role_page, name="role_page"),
 
     path('homeSite/admin/<int:id>/roles/add', views.role_page_ADD, name="role_page_ADD"),
-     path('homeSite/admin/<int:id>/roles/edit', views.role_page_EDIT, name="role_page_EDIT"),
+     path('homeSite/admin/<int:id>/<str:user>/roles/edit', views.role_page_EDIT, name="role_page_EDIT"),
 
 # ======================= User Pages =====================
 # ======================== Books ============================

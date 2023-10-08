@@ -48,7 +48,7 @@
                 <div class="column">
                   <a
                     class="button"
-                    href="/homeSite/admin/{{ i.user_ref.id }}/roles/edit"
+                    href="/homeSite/admin/{{ i.user_ref.id }}/{{ username }}/roles/edit"
                   >
                     <ion-icon name="create-outline"></ion-icon>
                   </a>
@@ -74,7 +74,7 @@
                 <div class="column">
                   <a
                     class="button"
-                    href="/homeSite/admin/{{ i.user_ref.id }}/roles/edit"
+                    href="/homeSite/admin/{{ i.user_ref.id }}/{{ username }}/roles/edit"
                   >
                     <ion-icon name="create-outline"></ion-icon>
                   </a>
@@ -96,4 +96,5 @@
     </div>
   </div>
 </section>
+
 {% endblock content %}

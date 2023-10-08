@@ -5,8 +5,9 @@ from django.core.signing import Signer, BadSignature
 import math
 from website_proj7_08_2023_bookFullpledge import settings
 from django.contrib.auth.hashers import make_password, check_password
-from .models import UserSite, NonFictionBook, NonficViewSet, NonficSerializer, TodoList, TodoListSerializer, Role, BookUpdate, TodoUpdate
-
+from .models import UserSite, NonFictionBook, NonficViewSet, NonficSerializer, TodoList, TodoListSerializer, Role, BookUpdate, TodoUpdate, SiteVisited
+import plotly.express as px
+import pandas as pd
 def index(request):
     context = {}
     return render(request, 'main/index.html', context)
@@ -112,12 +113,22 @@ def admin_page(request, id ):
     b = BookUpdate.objects.all().order_by("date_action_created")
     t = TodoUpdate.objects.all().order_by("date_action_created")
     user_count = UserSite.objects.all().count()
-    
+    visitors = SiteVisited.objects.all().order_by("date_visited")
+   
+    data = {
+        'date_visited': [visitor.date_visited for visitor in visitors],
+        'number_visitor': [visitor.number_visitor for visitor in visitors],
+    }
+    df = pd.DataFrame(data)
+    #fig = px.bar(df, x=visitors.date_visited, y= visitors.number_visitor)
+    fig = px.bar(df, x='date_visited', y='number_visitor', title='Bar Chart of Visitors')     
+    chart_html = fig.to_html(full_html=False)
     context = {
             "id": id,
             "BookUpdate_Collection": b,
             "TodoList_Collection":t,
-            "user_count":user_count, 
+            "user_count":user_count,
+            "chart_html":chart_html, 
     }
     return render(request, "main/site/admin/admin-home-page.html", context)
 
@@ -132,6 +143,7 @@ def role_page(request, id):
          "username":u_username,
          "user_roles": r_users,
          "admin_roles": r_admin,
+         
     }  
     return render(request,"main/site/admin/roles/home-roles.html", context)
 
@@ -153,18 +165,21 @@ def role_page_ADD(request, id):
     context ={
         "id":id,
         "users_choose":u,
+        
 
     }
     return render(request, "main/site/admin/roles/add-roles.html", context )
 
-def role_page_EDIT(request,id):
+def role_page_EDIT(request,id,user):
     u = UserSite.objects.get(id=id)
     r = Role.objects.get(user_ref =u)
-  
+    redirect_ID = UserSite.objects.get(username = user)
     context = {
         "id":id,
         "user":u,
         "roles":r,
+        "redirect_ID":redirect_ID,
+
     }
     if (request.method =="POST"):
         json_data = json.loads(request.body)

@@ -105,3 +105,9 @@ class TodoListViewSet(viewsets.ModelViewSet):
      queryset = TodoList.objects.all()
      serializer_class = TodoListSerializer
 
+
+class SiteVisited(models.Model):
+     id = models.AutoField(primary_key=True)
+     date_visited = models.DateField(auto_created=True)
+     number_visitor = models.IntegerField()
+
